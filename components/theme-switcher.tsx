@@ -51,7 +51,7 @@ const ThemeSwitcher = () => {
             />
           )}
         </Button>
-      </DropdownMenuTrigger>
+      </DropdownMenuTrigger>``
       <DropdownMenuContent className="w-content" align="start">
         <DropdownMenuRadioGroup
           value={theme}

@@ -32,6 +32,14 @@ const config = {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        autodigPrimary: {
+          DEFAULT: "hsl(var(--autodig-gold))",
+          foreground: "hsl(var(--autodig-gold-foreground))",
+        },
+        autodigBlue: {
+          DEFAULT: "hsl(var(--autodig-blue))",
+          foreground: "hsl(var(--autodig-blue-foreground))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
