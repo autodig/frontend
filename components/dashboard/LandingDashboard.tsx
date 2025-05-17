@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { UploadCloud } from "lucide-react";
+import { ApiResponse, CallRecord } from "@/interfaces";
 
 export default function LandingDashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [callRecords, setCallRecords] = useState<CallRecord[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -31,7 +33,11 @@ export default function LandingDashboard() {
         throw new Error("Upload failed");
       }
 
-      // Handle successful upload
+      const result: ApiResponse = await response.json();
+      if (result.success) {
+        setCallRecords(result.data);
+      }
+
       setFile(null);
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -71,6 +77,38 @@ export default function LandingDashboard() {
       >
         {isUploading ? "Uploading..." : "Process Call Data"}
       </button>
+
+      {callRecords.length > 0 && (
+        <div className="w-full mt-8">
+          <h2 className="text-2xl font-bold mb-4">Processed Call Records</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2 text-left">Contact Name</th>
+                  <th className="p-2 text-left">Date</th>
+                  <th className="p-2 text-left">Result</th>
+                  <th className="p-2 text-left">Amount</th>
+                  <th className="p-2 text-left">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {callRecords.map((record) => (
+                  <tr key={record.id} className="border-b">
+                    <td className="p-2">{`${record.first_name} ${record.last_name}`}</td>
+                    <td className="p-2">
+                      {new Date(record.transacted_at).toLocaleDateString()}
+                    </td>
+                    <td className="p-2">{record.display_source_name}</td>
+                    <td className="p-2">${record.amount}</td>
+                    <td className="p-2">{record.notes}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
