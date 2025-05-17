@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { ApiResponse, CallRecord } from "@/interfaces";
+import InfoSection from "./InfoSection";
 
-export default function LandingDashboard() {
+export default function LandingDashboar() {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [callRecords, setCallRecords] = useState<CallRecord[]>([]);
@@ -109,6 +110,7 @@ export default function LandingDashboard() {
           </div>
         </div>
       )}
+      <InfoSection />
     </div>
   );
 }
