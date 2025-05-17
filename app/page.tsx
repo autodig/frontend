@@ -1,13 +1,19 @@
-import Hero from "@/components/hero";
+import Hero from "@/components/Landing/hero";
 
 export default async function Home() {
   return (
     <>
-      <Hero />
-      <main className="flex-1 flex flex-col gap-6 px-4">
-        {/* <h2 className="font-medium text-xl mb-4">Next steps</h2> */}
-        {/* {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
-      </main>
+      <div className="flex flex-row gap-4 items-center  justify-around ">
+        <Hero />
+        <div className="flex flex-col gap-4">
+          <a
+            href="/dashboard"
+            className="text-6xl font-bold px-12 py-6 bg-autodigPrimary text-white rounded-xl hover:bg-opacity-90 transition-all"
+          >
+            START NOW
+          </a>
+        </div>
+      </div>
     </>
   );
 }
