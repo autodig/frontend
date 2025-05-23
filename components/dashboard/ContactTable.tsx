@@ -1,11 +1,12 @@
-import { CallRecord } from "@/interfaces";
+import { Contact } from "@/interfaces/contactInterface";
 
-interface CallRecordsTableProps {
-  records: CallRecord[];
+interface ContactTableProps {
+  contacts: Contact[];
 }
 
-export default function CallRecordsTable({ records }: CallRecordsTableProps) {
-  if (records.length === 0) return null;
+
+export default function ContactTable({ contacts }: ContactTableProps) {
+  if (contacts.length === 0) return null;
 
   return (
     <div className="w-full mt-8">
@@ -19,18 +20,20 @@ export default function CallRecordsTable({ records }: CallRecordsTableProps) {
               <th className="p-2 text-left">Result</th>
               <th className="p-2 text-left">Amount</th>
               <th className="p-2 text-left">Notes</th>
+              <th className="p-2 text-left">Zip</th>
+
             </tr>
           </thead>
           <tbody>
-            {records.map((record) => (
-              <tr key={record.id} className="border-b">
-                <td className="p-2">{`${record.first_name} ${record.last_name}`}</td>
+            {contacts.map((contact) => (
+              <tr key={contact.id} className="border-b">
+                <td className="p-2">{`${contact.first_name} ${contact.last_name}`}</td>
                 <td className="p-2">
-                  {new Date(record.transacted_at).toLocaleDateString()}
+                  {new Date(contact.created_at).toLocaleDateString()}
                 </td>
-                <td className="p-2">{record.display_source_name}</td>
-                <td className="p-2">${record.amount}</td>
-                <td className="p-2">{record.notes}</td>
+                <td className="p-2">{contact["All Emails"]}</td>
+                <td className="p-2">${contact["All Phones"]}</td>
+                <td className="p-2">{contact["All Addresses"]}</td>
               </tr>
             ))}
           </tbody>

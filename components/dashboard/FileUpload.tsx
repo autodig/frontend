@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { UploadCloud } from "lucide-react";
 import { ApiResponse, CallRecord } from "@/interfaces";
+import { Contact } from "@/interfaces/contactInterface";
 
 interface FileUploadProps {
-  onUploadSuccess: (records: CallRecord[]) => void;
+  onUploadSuccess: (contacts: Contact[]) => void;
   onBack: () => void;
 }
 
@@ -38,7 +39,7 @@ export default function FileUpload({
         throw new Error("Upload failed");
       }
 
-      const result: ApiResponse = await response.json();
+      const result: any = await response.json();
       if (result.success) {
         onUploadSuccess(result.data);
       }
@@ -81,11 +82,10 @@ export default function FileUpload({
         <button
           onClick={handleUpload}
           disabled={!file || isUploading}
-          className={`px-6 py-3 rounded-md text-white transition-colors ${
-            !file || isUploading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-autodigPrimary hover:bg-opacity-90"
-          }`}
+          className={`px-6 py-3 rounded-md text-white transition-colors ${!file || isUploading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-autodigPrimary hover:bg-opacity-90"
+            }`}
         >
           {isUploading ? "Uploading..." : "Process Call Data"}
         </button>
