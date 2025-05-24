@@ -6,6 +6,104 @@ interface ContactTableProps {
   contacts: Contact[];
 }
 
+interface TransactionRowProps {
+  transaction: any;
+}
+
+function TransactionRow({ transaction }: TransactionRowProps) {
+  return (
+    <tr className="border-b">
+      <td className="p-2 font-medium">
+        ${transaction.TRANSACTION_AMT.toLocaleString()}
+      </td>
+      <td className="p-2">
+        {new Date(transaction.TRANSACTION_DT).toLocaleDateString()}
+      </td>
+      <td className="p-2">{transaction.TRANSACTION_TP}</td>
+      <td className="p-2">{transaction.CMTE_NM}</td>
+      <td className="p-2">{transaction.FILE_NUM}</td>
+    </tr>
+  );
+}
+
+interface TransactionTableProps {
+  data: any;
+  onSmartConnection: (donorId: string) => void;
+}
+
+function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
+  return (
+    <div className="mb-4">
+      <p className="text-lg font-semibold mb-2">
+        Donor ID: {data.donor_identifier}
+        <button
+          onClick={() => onSmartConnection(data.donor_identifier)}
+          className="ml-4 font-bold text-xs px-1 py-1 border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
+        >
+          SMART CONNECTION
+        </button>
+      </p>
+      <table className="w-full border-collapse">
+        <thead>
+          <tr className="border-b">
+            <th className="p-2 text-left">Amount</th>
+            <th className="p-2 text-left">Date</th>
+            <th className="p-2 text-left">Type</th>
+            <th className="p-2 text-left">Committee ID</th>
+            <th className="p-2 text-left">File Number</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.transactions.map((transaction: any, idx: number) => (
+            <TransactionRow key={idx} transaction={transaction} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+interface ContactRowProps {
+  contact: Contact;
+  expandedContact: string | null;
+  setExpandedContact: (id: string | null) => void;
+  onSmartConnection: (donorId: string) => void;
+}
+
+function ContactRow({ contact, expandedContact, setExpandedContact, onSmartConnection }: ContactRowProps) {
+  return (
+    <React.Fragment>
+      <tr className="border-b border-autodigPrimary">
+        <td className="p-2">{contact.first_name}</td>
+        <td className="p-2">{contact.last_name}</td>
+        <td className="p-2">{contact.addresses__city__is_primary}</td>
+        <td className="p-2">{contact.addresses__zip__is_primary}</td>
+        <td className="p-2">
+          <button
+            onClick={() => setExpandedContact(expandedContact === contact.id ? null : contact.id)}
+            className="px-4 py-2 text-white rounded border border-autodigPrimary"
+          >
+            {expandedContact === contact.id ? "Hide Transactions" : "Show Transactions"}
+          </button>
+        </td>
+      </tr>
+      {expandedContact === contact.id && contact.fecTransactionsData && (
+        <tr className="border-rounded border border-autodigPrimary">
+          <td colSpan={5} className="p-4">
+            {contact.fecTransactionsData.map((data) => (
+              <TransactionTable
+                key={data.id}
+                data={data}
+                onSmartConnection={onSmartConnection}
+              />
+            ))}
+          </td>
+        </tr>
+      )}
+    </React.Fragment>
+  );
+}
+
 export default function ContactTable({ contacts }: ContactTableProps) {
   if (contacts.length === 0) return null;
 

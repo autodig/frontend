@@ -9,6 +9,18 @@ interface ContactAddress {
   country: string;
 }
 
+// FEC Personal Data interface
+interface FECPersonalData {
+  id: number;
+  name: string | null;
+  city: string | null;
+  state: string | null;
+  zip_code: string | null;
+  employer: string | null;
+  occupation: string | null;
+  unq_identifier: string;
+}
+
 // Contact details interface
 // interface Contact {
 //   id: string;
@@ -106,4 +118,4 @@ interface ApiResponse {
   data: CallRecord[];
 }
 
-export type { ContactAddress, CallRecord, ApiResponse };
+export type { ContactAddress, CallRecord, ApiResponse, FECPersonalData };
