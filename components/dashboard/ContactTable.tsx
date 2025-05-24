@@ -34,13 +34,13 @@ interface TransactionTableProps {
 
 function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
   const [smartConnectionData, setSmartConnectionData] = useState<FECPersonalData[]>([]);
+  const [showSmartConnection, setShowSmartConnection] = useState(false);
 
   const handleSmartConnectionClick = async (donorId: string) => {
     const data = await onSmartConnection(donorId);
     setSmartConnectionData(data);
+    setShowSmartConnection(true);
   };
-
-
 
   return (
     <div className="mb-4">
@@ -50,35 +50,74 @@ function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
           onClick={() => handleSmartConnectionClick(data.donor_identifier)}
           className="ml-4 font-bold text-xs px-1 py-1 border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
         >
-          SMART CONNECTION
+          AI RECOMMENDATIONS
         </button>
+        {smartConnectionData.length > 0 && (
+          <button
+            onClick={() => setShowSmartConnection(!showSmartConnection)}
+            className="ml-4 font-bold text-xs px-1 py-1 border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
+          >
+            {showSmartConnection ? "Show Transactions" : "Show AI RECOMMENDATIONS"}
+          </button>
+
+        )}
       </p>
 
-      {smartConnectionData && smartConnectionData.length > 0 ? (
-        <div className="p-4 rounded-lg mb-4">
-          <h3 className="font-bold mb-2">Smart Connection Data</h3>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Location</th>
-                <th className="p-2 text-left">Employer</th>
-                <th className="p-2 text-left">Occupation</th>
-              </tr>
-            </thead>
-            <tbody>
-              {smartConnectionData.map((connection, index) => (
-                <tr key={index} className="border-b">
-                  <td className="p-2">{connection.name}</td>
-                  <td className="p-2">{connection.city}, {connection.state} {connection.zip_code}</td>
-                  <td className="p-2">{connection.employer}</td>
-                  <td className="p-2">{connection.occupation}</td>
+      {smartConnectionData.length > 0 && (
+        <div className="mb-4">
+          {/* <button
+            onClick={() => setShowSmartConnection(!showSmartConnection)}
+            className="mb-2 px-3 py-1 text-sm border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
+          >
+            {showSmartConnection ? "Show Transactions" : "Show Smart Connections"}
+          </button> */}
+
+          {showSmartConnection ? (
+            <div className="p-4 rounded-lg">
+              <h3 className="font-bold mb-2">AI RECOMMENDATIONS</h3>
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b">
+                    <th className="p-2 text-left">Name</th>
+                    <th className="p-2 text-left">Location</th>
+                    <th className="p-2 text-left">Employer</th>
+                    <th className="p-2 text-left">Occupation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {smartConnectionData.map((connection, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2 text-sm">{connection.name}</td>
+                      <td className="p-2 text-sm">{connection.city}, {connection.state} {connection.zip_code}</td>
+                      <td className="p-2 text-sm">{connection.employer}</td>
+                      <td className="p-2 text-sm">{connection.occupation}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="border-b">
+                  <th className="p-2 text-left">Amount</th>
+                  <th className="p-2 text-left">Date</th>
+                  <th className="p-2 text-left">Type</th>
+                  <th className="p-2 text-left">Committee ID</th>
+                  <th className="p-2 text-left">File Number</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.transactions.map((transaction: any, idx: number) => (
+                  <TransactionRow key={idx} transaction={transaction} />
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-      ) : (
+      )}
+
+      {smartConnectionData.length === 0 && (
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b">
