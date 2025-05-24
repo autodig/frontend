@@ -12,6 +12,24 @@ export default function ContactTable({ contacts }: ContactTableProps) {
   const [expandedContact, setExpandedContact] = useState<string | null>(null);
 
   console.log(contacts[0].fecTransactionsData);
+
+  const handleSmartConnection = async (donorId: string) => {
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/potential-connections`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ donorId }),
+      });
+      const data = await response.json();
+      console.log('Potential connections response:', data);
+    } catch (error) {
+      console.error('Error fetching potential connections:', error);
+    }
+  };
+
   return (
     <div className="w-full mt-8 h-[800px] overflow-y-auto">
       <h2 className="text-2xl font-bold mb-4">Processed Call Records</h2>
@@ -29,7 +47,7 @@ export default function ContactTable({ contacts }: ContactTableProps) {
           <tbody>
             {contacts.map((contact) => (
               <React.Fragment key={contact.id}>
-                <tr className="border-b">
+                <tr className="border-b border-autodigPrimary">
                   <td className="p-2">{contact.first_name}</td>
                   <td className="p-2">{contact.last_name}</td>
                   <td className="p-2">{contact.addresses__city__is_primary}</td>
@@ -41,7 +59,7 @@ export default function ContactTable({ contacts }: ContactTableProps) {
                           expandedContact === contact.id ? null : contact.id
                         )
                       }
-                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      className="px-4 py-2  text-white rounded border border-autodigPrimary"
                     >
                       {expandedContact === contact.id
                         ? "Hide Transactions"
@@ -51,12 +69,19 @@ export default function ContactTable({ contacts }: ContactTableProps) {
                 </tr>
                 {expandedContact === contact.id &&
                   contact.fecTransactionsData && (
-                    <tr>
+                    <tr className="border-rounded border border-autodigPrimary">
                       <td colSpan={5} className="p-4">
                         {contact.fecTransactionsData.map((data) => (
                           <div key={data.id} className="mb-4">
                             <p className="text-lg font-semibold mb-2">
                               Donor ID: {data.donor_identifier}
+                              <button
+                                onClick={() => handleSmartConnection(data.donor_identifier)}
+                                className="ml-4 font-bold text-xs px-1 py-1 border 
+                                border-autodigPrimary  text-white rounded hover:bg-autodigPrimary/80"
+                              >
+                                SMART CONNECTION
+                              </button>
                             </p>
                             <table className="w-full border-collapse">
                               <thead>

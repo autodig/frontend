@@ -39,7 +39,7 @@ export default function RootLayout({
               <div className="flex flex-col w-full px-5 h-screen">
                 {children}
               </div>
-              <Footer />
+              {/* <Footer /> */}
             </div>
           </main>
         </ThemeProvider>
