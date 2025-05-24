@@ -11,7 +11,7 @@ import { Contact } from "@/interfaces/contactInterface";
 type Step = "personal" | "upload";
 
 export default function LandingDashboard() {
-  const [currentStep, setCurrentStep] = useState<Step>("personal");
+  const [currentStep, setCurrentStep] = useState<Step>("upload");
   const [contacts, setContacts] = useState<Contact[]>([]);
 
   const handleUploadSuccess = (contacts: Contact[]) => {
@@ -33,8 +33,8 @@ export default function LandingDashboard() {
           <div className="flex items-center">
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep === "personal"
-                  ? "bg-autodigPrimary text-white"
-                  : "bg-gray-200 text-gray-600"
+                ? "bg-autodigPrimary text-white"
+                : "bg-gray-200 text-gray-600"
                 }`}
             >
               1
@@ -45,8 +45,8 @@ export default function LandingDashboard() {
             />
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep === "upload"
-                  ? "bg-autodigPrimary text-white"
-                  : "bg-gray-200 text-gray-600"
+                ? "bg-autodigPrimary text-white"
+                : "bg-gray-200 text-gray-600"
                 }`}
             >
               2
