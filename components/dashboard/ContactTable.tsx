@@ -82,6 +82,7 @@ function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
                     <th className="p-2 text-left">Location</th>
                     <th className="p-2 text-left">Employer</th>
                     <th className="p-2 text-left">Occupation</th>
+                    <th className="p-2 text-left">$Donations</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,6 +92,8 @@ function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
                       <td className="p-2 text-sm">{connection.city}, {connection.state} {connection.zip_code}</td>
                       <td className="p-2 text-sm">{connection.employer}</td>
                       <td className="p-2 text-sm">{connection.occupation}</td>
+                      <td className="p-2 text-sm">{connection.total_previous_donations}</td>
+
                     </tr>
                   ))}
                 </tbody>

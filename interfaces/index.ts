@@ -19,6 +19,7 @@ interface FECPersonalData {
   employer: string | null;
   occupation: string | null;
   unq_identifier: string;
+  total_previous_donations: number;
 }
 
 // Contact details interface
