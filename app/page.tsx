@@ -1,19 +1,27 @@
+// autodig/frontend/autodig-frontend-470702cf2794d95bdc7a69cd570de108566511ec/app/page.tsx
 import Hero from "@/components/Landing/hero";
+import FeaturesSection from "@/components/Landing/FeaturesSection";
+import HowItWorksSection from "@/components/Landing/HowItWorksSection";
+import StatisticsSection from "@/components/Landing/StatisticsSection"; // Import the new component
 
 export default async function Home() {
   return (
-    <>
-      <div className="flex flex-row gap-4 items-center  justify-around ">
-        <Hero />
-        <div className="flex flex-col gap-4">
-          <a
-            href="/dashboard"
-            className="text-6xl font-bold px-12 py-6 bg-autodigPrimary text-white rounded-xl hover:bg-opacity-90 transition-all"
-          >
-            START NOW
-          </a>
-        </div>
-      </div>
-    </>
+    <div className="flex flex-col gap-20 w-full items-center">
+      {/* The Hero component */}
+      <Hero />
+
+      {/* The Features Section */}
+      <FeaturesSection />
+
+      {/* The How It Works Section */}
+      <HowItWorksSection />
+
+      {/* The new Statistics Section */}
+      <StatisticsSection />
+
+      {/* Optionally, if you want Testimonials after Statistics: */}
+      {/* import TestimonialsSection from "@/components/Landing/TestimonialsSection"; */}
+      {/* <TestimonialsSection /> */}
+    </div>
   );
 }

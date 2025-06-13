@@ -1,3 +1,5 @@
+/* autodig/frontend/autodig-frontend-470702cf2794d95bdc7a69cd570de108566511ec/app/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,27 +33,35 @@
     --chart-5: 27 87% 67%;
     --autodig-gold: 49 90% 59%;
     --autodig-blue: 195 32% 12%;
+    /* Keep autodig-blue as is, but foreground will often be white */
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 220 20% 7%;
+    /* A very dark grey, close to black from screenshot */
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    /* White text */
+    --card: 220 20% 9%;
+    /* Slightly lighter card background */
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 220 20% 9%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
+    --primary-foreground: 220 20% 7%;
+    /* Primary foreground to contrast with new dark primary */
+    --secondary: 220 15% 15%;
+    /* Muted secondary for subtle elements */
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 0 0% 65%;
+    /* Lighter grey for muted text */
+    --accent: 220 15% 15%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
+    --border: 220 15% 20%;
+    /* Slightly visible border */
+    --input: 220 15% 15%;
     --ring: 0 0% 83.1%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;

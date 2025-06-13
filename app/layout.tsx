@@ -1,3 +1,4 @@
+// autodig/frontend/autodig-frontend-470702cf2794d95bdc7a69cd570de108566511ec/app/layout.tsx
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
@@ -36,10 +37,10 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-20 items-center">
               <Nav />
-              <div className="flex flex-col w-full px-5 h-screen">
+              <div className="flex flex-col w-full px-5"> {/* REMOVED h-screen from here */}
                 {children}
               </div>
-              {/* <Footer /> */}
+              <Footer />
             </div>
           </main>
         </ThemeProvider>

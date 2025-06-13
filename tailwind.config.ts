@@ -1,3 +1,4 @@
+// autodig/frontend/autodig-frontend-470702cf2794d95bdc7a69cd570de108566511ec/tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config = {
@@ -34,11 +35,11 @@ const config = {
         },
         autodigPrimary: {
           DEFAULT: "hsl(var(--autodig-gold))",
-          foreground: "hsl(var(--autodig-gold-foreground))",
+          foreground: "hsl(var(--primary-foreground))", // autodig-gold-foreground will usually be the main foreground color
         },
         autodigBlue: {
           DEFAULT: "hsl(var(--autodig-blue))",
-          foreground: "hsl(var(--autodig-blue-foreground))",
+          foreground: "hsl(var(--foreground))", // autodig-blue-foreground will usually be the main foreground color (white in dark mode)
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
