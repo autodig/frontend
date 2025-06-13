@@ -6,7 +6,7 @@ import StatisticsSection from "@/components/Landing/StatisticsSection"; // Impor
 
 export default async function Home() {
   return (
-    <div className="flex flex-col gap-20 w-full items-center">
+    <div className="flex flex-col  w-full items-center">
       {/* The Hero component */}
       <Hero />
 
