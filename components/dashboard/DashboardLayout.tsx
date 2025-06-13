@@ -14,7 +14,7 @@ import {
     LogOut,
     Menu,
     X,
-    ChevronUp,
+    ChevronUp, // Added for ContactTable, though not explicitly requested here
 } from "lucide-react";
 import LandingDashboard from "./LandingDashboard";
 import { Contact } from "@/interfaces/contactInterface";
@@ -94,7 +94,7 @@ export default function DashboardLayout() {
     return (
         <div className="min-w-full flex flex-col h-screen bg-background text-foreground">
             {/* Dashboard Header */}
-            <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card shadow-sm">
+            <header className="flex items-center justify-between px-6 py-3 border-b border-border bg-card shadow-sm"> {/* Reduced py-4 to py-3 */}
                 <div className="flex items-center gap-3">
                     <button
                         className="lg:hidden text-muted-foreground hover:text-foreground"
@@ -132,18 +132,18 @@ export default function DashboardLayout() {
                      lg:relative lg:translate-x-0 transition-transform duration-300 ease-in-out
                      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
                 >
-                    {/* Logo in sidebar for desktop, hidden on mobile as it's in header */}
-                    <div className="px-6 pt-6 pb-4 hidden lg:block">
-                        <Link href="/" className="flex items-center gap-2">
-                            <Image
-                                src="/logo-no-background.png"
-                                alt="AutoDig"
-                                width={20}
-                                height={20}
-                            />
-                            <span className="text-autodigPrimary text-lg font-bold">AUTODIG</span>
-                        </Link>
-                    </div>
+                    {/* Removed Logo from sidebar for desktop */}
+                    {/* <div className="px-6 pt-6 pb-4 hidden lg:block">
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/logo-no-background.png"
+                alt="AutoDig"
+                width={20}
+                height={20}
+              />
+              <span className="text-autodigPrimary text-lg font-bold">AUTODIG</span>
+            </Link>
+          </div> */}
                     <nav className="flex-grow pt-4">
                         <ul className="flex flex-col">
                             {navItems.map((item) => (
@@ -186,7 +186,7 @@ export default function DashboardLayout() {
                 )}
 
                 {/* Right Content Area */}
-                <main className="flex-1 overflow-y-auto bg-background">
+                <main className="flex-1 overflow-y-auto p-8 bg-background"> {/* Added p-8 to main for overall content area padding */}
                     <div className="bg-card rounded-xl shadow-lg border border-border h-full w-full">
                         {renderContent()}
                     </div>

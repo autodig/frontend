@@ -30,8 +30,8 @@ export default function LandingDashboard({ onUploadSuccess }: LandingDashboardPr
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center p-8">
-      <div className="w-full"> {/* This div now has no max-w-* */}
+    <div className="w-full h-full flex flex-col items-center">
+      <div className="w-full">
         <div className="flex items-center justify-center mb-10">
           <div className="flex flex-col items-center">
             <div

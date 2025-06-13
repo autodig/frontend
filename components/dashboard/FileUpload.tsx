@@ -68,12 +68,11 @@ export default function FileUpload({
   };
 
   return (
-    // Removed w-full flex flex-col items-center gap-8 p-6 bg-card rounded-xl shadow-lg border border-border mx-auto max-w-2xl
     <div className="w-full p-6 bg-card rounded-xl shadow-lg border border-border">
       <h2 className="text-3xl font-extrabold text-foreground text-center mb-8">Upload Your Call Data</h2>
 
-      <div className="w-full flex justify-center">
-        {/* Removed md:max-w-md here, allowing the upload box itself to stretch */}
+      {/* New wrapper for upload box with max-width and mx-auto */}
+      <div className="max-w-md mx-auto flex flex-col items-center gap-6"> {/* Constrain upload box width and center it */}
         <div className="w-full p-8 border-2 border-dashed border-border rounded-lg flex flex-col items-center justify-center gap-6 text-center
                       hover:border-autodigPrimary hover:bg-muted/20 transition-all duration-200 cursor-pointer">
           <UploadCloud className="w-16 h-16 text-muted-foreground" />
@@ -98,28 +97,28 @@ export default function FileUpload({
             <p className="text-sm text-destructive mt-2">{error}</p>
           )}
         </div>
-      </div>
 
-      <div className="flex gap-4 mt-4 justify-center"> {/* Added justify-center for buttons */}
-        <button
-          onClick={onBack}
-          className="px-6 py-3 rounded-md text-foreground border border-input bg-background
-                     hover:bg-muted dark:hover:bg-gray-700 transition-colors duration-200"
-          disabled={isUploading}
-        >
-          Back
-        </button>
-        <button
-          onClick={handleUpload}
-          disabled={!file || isUploading}
-          className={`px-6 py-3 rounded-md text-white font-semibold transition-colors duration-200 ease-in-out
-            ${!file || isUploading
-              ? "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
-              : "bg-autodigPrimary hover:bg-autodigPrimary/90 shadow-md"
-            }`}
-        >
-          {isUploading ? "Processing..." : "Process Call Data"}
-        </button>
+        <div className="flex gap-4 justify-center w-full"> {/* Centered buttons within the constrained width */}
+          <button
+            onClick={onBack}
+            className="px-6 py-2 rounded-md text-foreground border border-input bg-background
+                       hover:bg-muted dark:hover:bg-gray-700 transition-colors duration-200" // Reduced py-3 to py-2
+            disabled={isUploading}
+          >
+            Back
+          </button>
+          <button
+            onClick={handleUpload}
+            disabled={!file || isUploading}
+            className={`px-6 py-2 rounded-md text-white font-semibold transition-colors duration-200 ease-in-out
+              ${!file || isUploading
+                ? "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
+                : "bg-autodigPrimary hover:bg-autodigPrimary/90 shadow-md"
+              }`} // Reduced py-3 to py-2
+          >
+            {isUploading ? "Processing..." : "Process Call Data"}
+          </button>
+        </div>
       </div>
     </div>
   );

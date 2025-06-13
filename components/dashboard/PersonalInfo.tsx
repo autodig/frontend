@@ -27,8 +27,7 @@ export default function PersonalInfo({ onNext }: PersonalInfoProps) {
   };
 
   return (
-    // Removed mx-auto max-w-2xl to allow it to fill the parent's width
-    <div className="w-full p-6 bg-card rounded-xl shadow-lg border border-border">
+    <div className="w-full p-6 bg-card rounded-xl shadow-lg border border-border mx-auto max-w-2xl"> {/* Combined classes, used max-w-2xl for better form width */}
       <h2 className="text-3xl font-extrabold text-foreground mb-8 text-center">
         Your Details
       </h2>
