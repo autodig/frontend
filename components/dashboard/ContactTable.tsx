@@ -2,6 +2,7 @@ import { Contact } from "@/interfaces/contactInterface";
 import { useEffect, useState } from "react";
 import React from "react";
 import { FECPersonalData } from "@/interfaces";
+import { ChevronDown, ChevronUp, XCircle } from "lucide-react"; // Import icons
 
 interface ContactTableProps {
   contacts: Contact[];
@@ -13,16 +14,16 @@ interface TransactionRowProps {
 
 function TransactionRow({ transaction }: TransactionRowProps) {
   return (
-    <tr className="border-b">
-      <td className="p-2 font-medium">
+    <tr className="border-b border-border hover:bg-muted/50 transition-colors">
+      <td className="p-3 font-medium text-foreground">
         ${transaction.TRANSACTION_AMT.toLocaleString()}
       </td>
-      <td className="p-2">
+      <td className="p-3 text-muted-foreground">
         {new Date(transaction.TRANSACTION_DT).toLocaleDateString()}
       </td>
-      <td className="p-2">{transaction.TRANSACTION_TP}</td>
-      <td className="p-2">{transaction.CMTE_NM}</td>
-      <td className="p-2">{transaction.FILE_NUM}</td>
+      <td className="p-3 text-muted-foreground">{transaction.TRANSACTION_TP}</td>
+      <td className="p-3 text-muted-foreground">{transaction.CMTE_NM}</td>
+      <td className="p-3 text-muted-foreground">{transaction.FILE_NUM}</td>
     </tr>
   );
 }
@@ -35,108 +36,110 @@ interface TransactionTableProps {
 function TransactionTable({ data, onSmartConnection }: TransactionTableProps) {
   const [smartConnectionData, setSmartConnectionData] = useState<FECPersonalData[]>([]);
   const [showSmartConnection, setShowSmartConnection] = useState(false);
+  const [isLoadingSmartConnection, setIsLoadingSmartConnection] = useState(false);
+  const [smartConnectionError, setSmartConnectionError] = useState<string | null>(null);
 
   const handleSmartConnectionClick = async (donorId: string) => {
-    const data = await onSmartConnection(donorId);
-    setSmartConnectionData(data);
-    setShowSmartConnection(true);
+    setIsLoadingSmartConnection(true);
+    setSmartConnectionError(null);
+    try {
+      const result = await onSmartConnection(donorId);
+      setSmartConnectionData(result);
+      setShowSmartConnection(true);
+    } catch (error: any) {
+      console.error('Error fetching smart connections:', error);
+      setSmartConnectionError(error.message || "Failed to fetch AI recommendations.");
+    } finally {
+      setIsLoadingSmartConnection(false);
+    }
   };
 
   return (
-    <div className="mb-4">
-      <p className="text-lg font-semibold mb-2">
-        Donor ID: {data.donor_identifier}
-        <button
-          onClick={() => handleSmartConnectionClick(data.donor_identifier)}
-          className="ml-4 font-bold text-xs px-1 py-1 border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
-        >
-          AI RECOMMENDATIONS
-        </button>
-        {smartConnectionData.length > 0 && (
+    <div className="mb-6 p-4 border border-border rounded-lg bg-background shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-lg font-semibold text-foreground">
+          Donor ID: {data.donor_identifier}
+        </p>
+        <div className="flex gap-2">
           <button
-            onClick={() => setShowSmartConnection(!showSmartConnection)}
-            className="ml-4 font-bold text-xs px-1 py-1 border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
+            onClick={() => handleSmartConnectionClick(data.donor_identifier)}
+            className="flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-autodigBlue rounded-md
+                       hover:bg-autodigBlue/90 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoadingSmartConnection}
           >
-            {showSmartConnection ? "Show Transactions" : "Show AI RECOMMENDATIONS"}
+            {isLoadingSmartConnection ? "Loading AI..." : "AI RECOMMENDATIONS"}
           </button>
-
-        )}
-      </p>
-
-      {smartConnectionData.length > 0 && (
-        <div className="mb-4">
-          {/* <button
-            onClick={() => setShowSmartConnection(!showSmartConnection)}
-            className="mb-2 px-3 py-1 text-sm border border-autodigPrimary text-white rounded hover:bg-autodigPrimary/80"
-          >
-            {showSmartConnection ? "Show Transactions" : "Show Smart Connections"}
-          </button> */}
-
-          {showSmartConnection ? (
-            <div className="p-4 rounded-lg">
-              <h3 className="font-bold mb-2">AI RECOMMENDATIONS</h3>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-2 text-left">Name</th>
-                    <th className="p-2 text-left">Location</th>
-                    <th className="p-2 text-left">Employer</th>
-                    <th className="p-2 text-left">Occupation</th>
-                    <th className="p-2 text-left">$Donations</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {smartConnectionData.map((connection, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="p-2 text-sm">{connection.name}</td>
-                      <td className="p-2 text-sm">{connection.city}, {connection.state} {connection.zip_code}</td>
-                      <td className="p-2 text-sm">{connection.employer}</td>
-                      <td className="p-2 text-sm">{connection.occupation}</td>
-                      <td className="p-2 text-sm">{connection.total_previous_donations}</td>
-
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b">
-                  <th className="p-2 text-left">Amount</th>
-                  <th className="p-2 text-left">Date</th>
-                  <th className="p-2 text-left">Type</th>
-                  <th className="p-2 text-left">Committee ID</th>
-                  <th className="p-2 text-left">File Number</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.transactions.map((transaction: any, idx: number) => (
-                  <TransactionRow key={idx} transaction={transaction} />
-                ))}
-              </tbody>
-            </table>
+          {smartConnectionData.length > 0 && (
+            <button
+              onClick={() => setShowSmartConnection(!showSmartConnection)}
+              className="flex items-center px-3 py-1.5 text-xs font-semibold text-autodigPrimary bg-background border border-autodigPrimary rounded-md
+                         hover:bg-autodigPrimary/10 transition-colors duration-200"
+            >
+              {showSmartConnection ? "Show Transactions" : "Show AI Recommendations"}
+              {showSmartConnection ? <ChevronUp className="ml-1 h-3 w-3" /> : <ChevronDown className="ml-1 h-3 w-3" />}
+            </button>
           )}
+        </div>
+      </div>
+
+      {smartConnectionError && (
+        <div className="flex items-center text-destructive text-sm mb-4">
+          <XCircle className="h-4 w-4 mr-2" />
+          {smartConnectionError}
         </div>
       )}
 
-      {smartConnectionData.length === 0 && (
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="border-b">
-              <th className="p-2 text-left">Amount</th>
-              <th className="p-2 text-left">Date</th>
-              <th className="p-2 text-left">Type</th>
-              <th className="p-2 text-left">Committee ID</th>
-              <th className="p-2 text-left">File Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.transactions.map((transaction: any, idx: number) => (
-              <TransactionRow key={idx} transaction={transaction} />
-            ))}
-          </tbody>
-        </table>
+      {showSmartConnection && smartConnectionData.length > 0 ? (
+        <div className="p-4 bg-muted/20 rounded-lg">
+          <h3 className="font-bold text-lg text-foreground mb-3">AI Recommendations</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-muted text-muted-foreground rounded-t-lg">
+                  <th className="p-3 text-left text-sm font-semibold">Name</th>
+                  <th className="p-3 text-left text-sm font-semibold">Location</th>
+                  <th className="p-3 text-left text-sm font-semibold">Employer</th>
+                  <th className="p-3 text-left text-sm font-semibold">Occupation</th>
+                  <th className="p-3 text-left text-sm font-semibold">Total Donations</th>
+                </tr>
+              </thead>
+              <tbody>
+                {smartConnectionData.map((connection, index) => (
+                  <tr key={index} className="border-b border-border hover:bg-muted/50 transition-colors">
+                    <td className="p-3 text-sm text-foreground">{connection.name}</td>
+                    <td className="p-3 text-sm text-muted-foreground">
+                      {connection.city}, {connection.state} {connection.zip_code}
+                    </td>
+                    <td className="p-3 text-sm text-muted-foreground">{connection.employer}</td>
+                    <td className="p-3 text-sm text-muted-foreground">{connection.occupation}</td>
+                    <td className="p-3 text-sm text-autodigPrimary font-semibold">
+                      ${connection.total_previous_donations?.toLocaleString() || 'N/A'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-muted text-muted-foreground rounded-t-lg">
+                <th className="p-3 text-left text-sm font-semibold">Amount</th>
+                <th className="p-3 text-left text-sm font-semibold">Date</th>
+                <th className="p-3 text-left text-sm font-semibold">Type</th>
+                <th className="p-3 text-left text-sm font-semibold">Committee Name</th>
+                <th className="p-3 text-left text-sm font-semibold">File Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.transactions.map((transaction: any, idx: number) => (
+                <TransactionRow key={idx} transaction={transaction} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
@@ -150,25 +153,38 @@ interface ContactRowProps {
 }
 
 function ContactRow({ contact, expandedContact, setExpandedContact, onSmartConnection }: ContactRowProps) {
+  const isExpanded = expandedContact === contact.id;
+
   return (
     <React.Fragment>
-      <tr className="border-b border-autodigPrimary">
-        <td className="p-2">{contact.first_name}</td>
-        <td className="p-2">{contact.last_name}</td>
-        <td className="p-2">{contact.addresses__city__is_primary}</td>
-        <td className="p-2">{contact.addresses__zip__is_primary}</td>
-        <td className="p-2">
+      <tr
+        className={`border-b border-border cursor-pointer hover:bg-muted/30 transition-colors
+          ${isExpanded ? "bg-muted/50" : ""}`}
+        onClick={() => setExpandedContact(isExpanded ? null : contact.id)}
+      >
+        <td className="p-3 text-foreground font-medium">{contact.first_name}</td>
+        <td className="p-3 text-foreground font-medium">{contact.last_name}</td>
+        <td className="p-3 text-muted-foreground">
+          {contact.addresses__city__is_primary}, {contact.addresses__state__is_primary}
+        </td>
+        <td className="p-3 text-muted-foreground">{contact.addresses__zip__is_primary}</td>
+        <td className="p-3">
           <button
-            onClick={() => setExpandedContact(expandedContact === contact.id ? null : contact.id)}
-            className="px-4 py-2 text-white rounded border border-autodigPrimary"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent row click from toggling expansion
+              setExpandedContact(isExpanded ? null : contact.id);
+            }}
+            className="flex items-center px-4 py-2 text-sm text-autodigPrimary rounded-md border border-autodigPrimary bg-background
+                       hover:bg-autodigPrimary hover:text-white transition-colors duration-200"
           >
-            {expandedContact === contact.id ? "Hide Transactions" : "Show Transactions"}
+            {isExpanded ? "Hide Details" : "View Details"}
+            {isExpanded ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
           </button>
         </td>
       </tr>
-      {expandedContact === contact.id && contact.fecTransactionsData && (
-        <tr className="border-rounded border border-autodigPrimary">
-          <td colSpan={5} className="p-4">
+      {isExpanded && contact.fecTransactionsData && contact.fecTransactionsData.length > 0 && (
+        <tr>
+          <td colSpan={5} className="p-4 bg-card border-t border-border">
             {contact.fecTransactionsData.map((data) => (
               <TransactionTable
                 key={data.id}
@@ -179,17 +195,27 @@ function ContactRow({ contact, expandedContact, setExpandedContact, onSmartConne
           </td>
         </tr>
       )}
+      {isExpanded && (!contact.fecTransactionsData || contact.fecTransactionsData.length === 0) && (
+        <tr>
+          <td colSpan={5} className="p-4 bg-card border-t border-border text-center text-muted-foreground">
+            No FEC transaction data available for this contact.
+          </td>
+        </tr>
+      )}
     </React.Fragment>
   );
 }
 
 export default function ContactTable({ contacts }: ContactTableProps) {
-  if (contacts.length === 0) return null;
+  if (!contacts || contacts.length === 0) return null;
 
   const [expandedContact, setExpandedContact] = useState<string | null>(null);
   const handleSmartConnection = async (donorId: string) => {
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      if (!backendUrl) {
+        throw new Error("Backend URL is not defined. Cannot fetch smart connections.");
+      }
       const response = await fetch(`${backendUrl}/potential-connections`, {
         method: 'POST',
         headers: {
@@ -197,26 +223,32 @@ export default function ContactTable({ contacts }: ContactTableProps) {
         },
         body: JSON.stringify({ donorId }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch potential connections.");
+      }
+
       const data = await response.json();
       return data;
-      console.log('Potential connections response:', data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching potential connections:', error);
+      throw error; // Re-throw to be caught by TransactionTable
     }
   };
 
   return (
-    <div className="w-full mt-8 h-[800px] overflow-y-auto">
-      <h2 className="text-2xl font-bold mb-4">Processed Call Records</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+    <div className="w-full mt-8 p-6 bg-card rounded-xl shadow-lg border border-border">
+      <h2 className="text-3xl font-extrabold text-foreground mb-6">Processed Call Records</h2>
+      <div className="overflow-x-auto rounded-lg border border-border">
+        <table className="w-full min-w-[700px] border-collapse">
           <thead>
-            <tr className="bg-gray-100 text-black">
-              <th className="p-2 text-left">First Name</th>
-              <th className="p-2 text-left">Last Name</th>
-              <th className="p-2 text-left">Address</th>
-              <th className="p-2 text-left">Zip</th>
-              <th className="p-2 text-left">Actions</th>
+            <tr className="bg-muted text-muted-foreground uppercase text-sm">
+              <th className="p-3 text-left">First Name</th>
+              <th className="p-3 text-left">Last Name</th>
+              <th className="p-3 text-left">Address</th>
+              <th className="p-3 text-left">Zip</th>
+              <th className="p-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>

@@ -1,5 +1,5 @@
-import LandingDashboard from "@/components/dashboard/LandingDashboard";
+import DashboardLayout from "@/components/dashboard/DashboardLayout";
 
 export default function Dashboard() {
-  return <LandingDashboard />;
+  return <DashboardLayout />;
 }

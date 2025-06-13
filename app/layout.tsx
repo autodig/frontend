@@ -2,8 +2,7 @@
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Nav from "@/components/layout/Nav";
-import Footer from "@/components/layout/Footer";
+// Nav and Footer imports removed from here
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -34,15 +33,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-32 items-center">
-              <Nav />
-              {/* Removed px-5 from here to allow sections to span full width */}
-              <div className="flex flex-col w-full">
-                {children}
-              </div>
-              <Footer />
-            </div>
+          <main className=" min-h-screen flex flex-col items-center">
+            {children}
           </main>
         </ThemeProvider>
       </body>
