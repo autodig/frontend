@@ -15,7 +15,7 @@ export default function Hero() {
       <div className="relative z-10 flex flex-col items-center text-center max-w-4xl">
         {/* Main Heading - combined and styled for prominence */}
         <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-foreground leading-tight mb-4 tracking-wide drop-shadow-sm">
-          Multiply Your <span className="text-autodigPrimary">TIME</span>,<br className="sm:hidden" /> Maximize Your <span className="text-autodigBlue">MONEY</span>.
+          Multiply Your <span className="text-autodigPrimary">TIME</span>,<br className="sm:hidden" /> Maximize Your <span className="text-autodigPrimary">MONEY</span>.
         </h1>
         <h2 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-autodigPrimary animate-pulse drop-shadow-md mb-8">
           X100
