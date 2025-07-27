@@ -1,5 +1,7 @@
 'use client';
 
+import { createSession, clearSession } from './sessionManager';
+
 export const clientSignIn = async (email: string, password: string) => {
     try {
         const response = await fetch('/api/login', {
@@ -16,8 +18,7 @@ export const clientSignIn = async (email: string, password: string) => {
             throw new Error(result.message);
         }
 
-        localStorage.setItem('token', result.token);
-        localStorage.setItem('user', JSON.stringify(result.user));
+        createSession(result.token, result.user);
 
         window.location.href = '/dashboard';
         return result;
@@ -49,7 +50,6 @@ export const clientSignUp = async (email: string, password: string) => {
 };
 
 export const clientSignOut = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login';
+    clearSession();
+    window.location.href = '/';
 }; 

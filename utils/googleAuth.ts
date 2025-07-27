@@ -4,7 +4,7 @@ declare global {
     }
 }
 
-export const initializeGoogleAuth = () => {
+export const initializeGoogleAuth = (onSuccess?: () => void) => {
     if (typeof window === 'undefined') return;
 
     const script = document.createElement('script');
@@ -17,14 +17,16 @@ export const initializeGoogleAuth = () => {
         script.onload = () => {
             window.google.accounts.id.initialize({
                 client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-                callback: handleCredentialResponse,
+                callback: (response: any) => handleCredentialResponse(response, onSuccess),
             });
             resolve();
         };
     });
 };
 
-export const handleCredentialResponse = async (response: any) => {
+import { createSession } from './sessionManager';
+
+export const handleCredentialResponse = async (response: any, onSuccess?: () => void) => {
     try {
         const result = await fetch('/api/auth/google', {
             method: 'POST',
@@ -35,9 +37,12 @@ export const handleCredentialResponse = async (response: any) => {
         const data = await result.json();
 
         if (data.success) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            window.location.href = '/dashboard';
+            createSession(data.token, data.user);
+            if (onSuccess) {
+                onSuccess();
+            } else {
+                window.location.href = '/dashboard';
+            }
         } else {
             console.error('Google auth failed:', data.message);
         }

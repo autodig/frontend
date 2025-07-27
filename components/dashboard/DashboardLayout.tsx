@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -20,7 +20,8 @@ import LandingDashboard from "./LandingDashboard";
 import { Contact } from "@/interfaces/contactInterface";
 import ContactTable from "./ContactTable";
 import { ThemeSwitcher } from "../theme-switcher";
-import { signOutAction } from "@/app/actions";
+import { clientSignOut } from "@/utils/clientActions";
+import { getCurrentUser } from "@/utils/sessionManager";
 
 type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "settings";
 
@@ -28,6 +29,14 @@ export default function DashboardLayout() {
     const [activeTab, setActiveTab] = useState<Tab>("import-data");
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+
+    useEffect(() => {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+            setUser(currentUser);
+        }
+    }, []);
 
     const handleUploadSuccess = (uploadedContacts: Contact[]) => {
         setContacts(uploadedContacts);
@@ -115,13 +124,14 @@ export default function DashboardLayout() {
                 </div>
                 <div className="flex items-center gap-4">
                     <ThemeSwitcher />
-                    <form action={signOutAction}>
-                        <button className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium
-                               bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors">
-                            <LogOut size={16} />
-                            Sign Out
-                        </button>
-                    </form>
+                    <button
+                        onClick={clientSignOut}
+                        className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium
+                               bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors"
+                    >
+                        <LogOut size={16} />
+                        Sign Out
+                    </button>
                 </div>
             </header>
 
@@ -172,7 +182,7 @@ export default function DashboardLayout() {
                             <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
                                 <Users size={16} />
                             </div>
-                            <span>User Name</span>
+                            <span>{user?.name || user?.email || 'User'}</span>
                         </div>
                     </div>
                 </aside>

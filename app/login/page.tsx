@@ -36,8 +36,8 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <Card className="mx-auto max-w-sm">
+        <div className="flex items-center justify-center min-h-screen bg-background">
+            <Card className="mx-auto max-w-sm border-border shadow-2xl">
                 <CardHeader>
                     <CardTitle className="text-2xl">Login</CardTitle>
                     <CardDescription>
@@ -72,7 +72,7 @@ export default function LoginPage() {
                                 required
                             />
                         </div>
-                        <Button type="submit" className="w-full" disabled={loading}>
+                        <Button type="submit" className="w-full bg-autodigPrimary text-autodigBlue font-semibold hover:bg-autodigPrimary/90 transition-colors" disabled={loading}>
                             {loading ? "Logging in..." : "Login"}
                         </Button>
                     </form>

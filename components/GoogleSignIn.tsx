@@ -3,12 +3,16 @@
 import { useEffect } from 'react';
 import { initializeGoogleAuth, renderGoogleButton } from '@/utils/googleAuth';
 
-export default function GoogleSignIn() {
+interface GoogleSignInProps {
+    onSuccess?: () => void;
+}
+
+export default function GoogleSignIn({ onSuccess }: GoogleSignInProps) {
     useEffect(() => {
-        initializeGoogleAuth()?.then(() => {
+        initializeGoogleAuth(onSuccess)?.then(() => {
             renderGoogleButton('google-signin-button');
         });
-    }, []);
+    }, [onSuccess]);
 
     return (
         <div className="w-full">

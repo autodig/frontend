@@ -41,8 +41,8 @@ export default function SignupPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <Card className="mx-auto max-w-sm">
+        <div className="flex items-center justify-center min-h-screen bg-background">
+            <Card className="mx-auto max-w-sm border-border shadow-2xl">
                 <CardHeader>
                     <CardTitle className="text-xl">Sign Up</CardTitle>
                     <CardDescription>
@@ -78,7 +78,7 @@ export default function SignupPage() {
                                 required
                             />
                         </div>
-                        <Button type="submit" className="w-full" disabled={loading}>
+                        <Button type="submit" className="w-full bg-autodigPrimary text-autodigBlue font-semibold hover:bg-autodigPrimary/90 transition-colors" disabled={loading}>
                             {loading ? "Creating account..." : "Create an account"}
                         </Button>
                     </form>
