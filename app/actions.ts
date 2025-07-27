@@ -28,14 +28,14 @@ export const signUpAction = async (formData: FormData) => {
 
   const result = await response.json();
 
-  if (result.error) {
-    return encodedRedirect("error", "/signup", result.error.message);
+  if (!result.success) {
+    return encodedRedirect("error", "/signup", result.message);
   }
 
   return encodedRedirect(
     "success",
     "/signup",
-    "Thanks for signing up! Please check your email for a verification link."
+    "Account created successfully! You can now login."
   );
 };
 
@@ -54,12 +54,12 @@ export const signInAction = async (formData: FormData) => {
 
   const result = await response.json();
 
-  if (result.error) {
-    return encodedRedirect("error", "/login", result.error.message);
+  if (!result.success) {
+    return encodedRedirect("error", "/login", result.message);
   }
 
-  const supabase = await createClient();
-  await supabase.auth.setSession(result);
+  localStorage.setItem('token', result.token);
+  localStorage.setItem('user', JSON.stringify(result.user));
 
   return redirect("/dashboard");
 };

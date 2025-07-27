@@ -60,7 +60,7 @@ export default function Nav() {
             Contact
           </Link>
           <Button variant="default" size="sm">
-            <Link href="/sign-in" className="text-primary-foreground">
+            <Link href="/login" className="text-primary-foreground">
               Sign In
             </Link>
           </Button>

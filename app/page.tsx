@@ -1,5 +1,4 @@
-// autodig/frontend/autodig-frontend-470702cf2794d95bdc7a69cd570de108566511ec/app/page.tsx
-import Hero from "@/components/Landing/hero";
+import Hero from "@/components/Landing/Hero";
 import FeaturesSection from "@/components/Landing/FeaturesSection";
 import HowItWorksSection from "@/components/Landing/HowItWorksSection";
 import StatisticsSection from "@/components/Landing/StatisticsSection";
