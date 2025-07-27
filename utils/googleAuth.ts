@@ -56,6 +56,13 @@ export const renderGoogleButton = (elementId: string) => {
 
     window.google.accounts.id.renderButton(
         document.getElementById(elementId),
-        { theme: 'outline', size: 'large', width: '100%' }
+        {
+            theme: 'outline',
+            size: 'large',
+            width: '100%',
+            text: 'signin_with',
+            shape: 'rectangular',
+            logo_alignment: 'center'
+        }
     );
 }; 
