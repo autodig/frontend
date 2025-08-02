@@ -13,6 +13,7 @@ export default function Nav() {
     setShowAuthModal(false);
     window.location.href = '/dashboard';
   };
+  // test
 
   return (
     <>
