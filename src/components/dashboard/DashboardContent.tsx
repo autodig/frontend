@@ -13,7 +13,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ title, subtitle, ch
                 <h1 className="text-4xl font-bold text-gray-800 dark:text-white">{title}</h1>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-2">{subtitle}</p>
             </header>
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <div className="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-6">
                 {children}
             </div>
         </div>
