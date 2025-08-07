@@ -14,7 +14,7 @@ import {
     LogOut,
     Menu,
     X,
-    ChevronUp, // Added for ContactTable, though not explicitly requested here
+    ChevronUp,
     Search,
 } from "lucide-react";
 import LandingDashboard from "./LandingDashboard";
@@ -24,11 +24,15 @@ import Analyzer from "./Analyzer";
 import { ThemeSwitcher } from "../theme-switcher";
 import { clientSignOut } from "@/src/utils/clientActions";
 import { getCurrentUser } from "@/src/utils/sessionManager";
+import OverviewDashboard from "./OverviewDashboard";
+import PerformanceDashboard from "./PerformanceDashboard";
+import ManageContactsDashboard from "./ManageContactsDashboard";
+import SettingsDashboard from "./SettingsDashboard";
 
 type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "analyzer" | "settings";
 
 export default function DashboardLayout() {
-    const [activeTab, setActiveTab] = useState<Tab>("import-data");
+    const [activeTab, setActiveTab] = useState<Tab>("overview");
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
@@ -48,12 +52,7 @@ export default function DashboardLayout() {
     const renderContent = () => {
         switch (activeTab) {
             case "overview":
-                return (
-                    <div className="p-8">
-                        <h2 className="text-3xl font-bold text-foreground mb-6">Dashboard Overview</h2>
-                        <p className="text-muted-foreground">Welcome to your AutoDig Dashboard! Select an option from the left menu to get started.</p>
-                    </div>
-                );
+                return <OverviewDashboard />;
             case "import-data":
                 return <LandingDashboard onUploadSuccess={handleUploadSuccess} />;
             case "call-lists":
@@ -68,32 +67,18 @@ export default function DashboardLayout() {
                     </div>
                 );
             case "track-performance":
-                return (
-                    <div className="p-8">
-                        <h2 className="text-3xl font-bold text-foreground mb-6">Performance Tracking</h2>
-                        <p className="text-muted-foreground">View your outreach performance metrics and insights here.</p>
-                    </div>
-                );
+                return <PerformanceDashboard />;
             case "manage-contacts":
-                return (
-                    <div className="p-8">
-                        <h2 className="text-3xl font-bold text-foreground mb-6">Manage Contacts</h2>
-                        <p className="text-muted-foreground">Edit, view, or manage individual contact details.</p>
-                    </div>
-                );
+                return <ManageContactsDashboard />;
             case "analyzer":
                 return <Analyzer />;
             case "settings":
-                return (
-                    <div className="p-8">
-                        <h2 className="text-3xl font-bold text-foreground mb-6">Settings</h2>
-                        <p className="text-muted-foreground">Adjust your account and application settings.</p>
-                    </div>
-                );
+                return <SettingsDashboard />;
             default:
                 return null;
         }
     };
+
 
     const navItems = [
         { id: "overview", label: "Overview", icon: Home },

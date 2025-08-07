@@ -179,23 +179,15 @@ export default function FileUpload({
           )}
         </div>
 
-        <div className="flex gap-4 justify-center w-full"> {/* Centered buttons within the constrained width */}
-          <button
-            onClick={onBack}
-            className="px-6 py-2 rounded-md text-foreground border border-input bg-background
-                       hover:bg-muted dark:hover:bg-gray-700 transition-colors duration-200" // Reduced py-3 to py-2
-            disabled={isUploading}
-          >
-            Back
-          </button>
+        <div className="flex gap-4 justify-center w-full">
           <button
             onClick={handleUpload}
             disabled={!file || isUploading}
-            className={`px-6 py-2 rounded-md text-white font-semibold transition-colors duration-200 ease-in-out
+            className={`px-6 py-2 rounded-md text-white font-semibold transition-colors duration-200 ease-in-out w-full
               ${!file || isUploading
                 ? "bg-gray-400 dark:bg-gray-700 cursor-not-allowed"
                 : "bg-autodigPrimary hover:bg-autodigPrimary/90 shadow-md"
-              }`} // Reduced py-3 to py-2
+              }`}
           >
             {isUploading ? "Processing..." : "Process Call Data"}
           </button>
