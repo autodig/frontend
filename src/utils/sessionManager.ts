@@ -53,6 +53,31 @@ export const clearSession = (): void => {
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('temp_user'); // Clean up any temporary user data
+};
+
+export const cleanupCorruptedData = (): void => {
+    try {
+        // Check and clean corrupted session data
+        const sessionData = localStorage.getItem(SESSION_KEY);
+        if (sessionData === 'undefined' || sessionData === 'null') {
+            localStorage.removeItem(SESSION_KEY);
+        }
+
+        // Check and clean corrupted user data
+        const userData = localStorage.getItem('user');
+        if (userData === 'undefined' || userData === 'null') {
+            localStorage.removeItem('user');
+        }
+
+        // Check and clean corrupted token data
+        const tokenData = localStorage.getItem('token');
+        if (tokenData === 'undefined' || tokenData === 'null') {
+            localStorage.removeItem('token');
+        }
+    } catch (error) {
+        console.error('Error cleaning up corrupted data:', error);
+    }
 };
 
 export const isAuthenticated = (): boolean => {
@@ -60,8 +85,27 @@ export const isAuthenticated = (): boolean => {
 };
 
 export const getCurrentUser = (): User | null => {
+    // Clean up any corrupted data first
+    cleanupCorruptedData();
+
     const session = getSession();
-    return session?.user || null;
+    if (session?.user) {
+        return session.user;
+    }
+
+    // Try to get user from localStorage if session is not available
+    try {
+        const userString = localStorage.getItem('user');
+        if (userString && userString !== 'undefined' && userString !== 'null') {
+            return JSON.parse(userString);
+        }
+    } catch (error) {
+        console.error('Error parsing user from localStorage:', error);
+        // Clear corrupted user data
+        localStorage.removeItem('user');
+    }
+
+    return null;
 };
 
 export const refreshSession = (): void => {

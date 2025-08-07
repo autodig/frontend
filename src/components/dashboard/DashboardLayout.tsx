@@ -15,15 +15,17 @@ import {
     Menu,
     X,
     ChevronUp, // Added for ContactTable, though not explicitly requested here
+    Search,
 } from "lucide-react";
 import LandingDashboard from "./LandingDashboard";
 import { Contact } from "@/src/interfaces/contactInterface";
 import ContactTable from "./ContactTable";
+import Analyzer from "./Analyzer";
 import { ThemeSwitcher } from "../theme-switcher";
 import { clientSignOut } from "@/src/utils/clientActions";
 import { getCurrentUser } from "@/src/utils/sessionManager";
 
-type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "settings";
+type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "analyzer" | "settings";
 
 export default function DashboardLayout() {
     const [activeTab, setActiveTab] = useState<Tab>("import-data");
@@ -79,6 +81,8 @@ export default function DashboardLayout() {
                         <p className="text-muted-foreground">Edit, view, or manage individual contact details.</p>
                     </div>
                 );
+            case "analyzer":
+                return <Analyzer />;
             case "settings":
                 return (
                     <div className="p-8">
@@ -95,6 +99,7 @@ export default function DashboardLayout() {
         { id: "overview", label: "Overview", icon: Home },
         { id: "import-data", label: "Import Data", icon: UploadCloud },
         { id: "call-lists", label: "Call Lists", icon: List },
+        { id: "analyzer", label: "Analyzer", icon: Search },
         { id: "track-performance", label: "Track Performance", icon: TrendingUp },
         { id: "manage-contacts", label: "Manage Contacts", icon: Users },
         { id: "settings", label: "Settings", icon: Settings },
