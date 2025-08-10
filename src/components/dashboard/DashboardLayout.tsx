@@ -28,8 +28,9 @@ import OverviewDashboard from "./OverviewDashboard";
 import PerformanceDashboard from "./PerformanceDashboard";
 import ManageContactsDashboard from "./ManageContactsDashboard";
 import SettingsDashboard from "./SettingsDashboard";
+import AIChatDashboard from "./AIChatDashboard";
 
-type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "analyzer" | "settings";
+type Tab = "overview" | "import-data" | "call-lists" | "track-performance" | "manage-contacts" | "analyzer" | "ai-chat" | "settings";
 
 export default function DashboardLayout() {
     const [activeTab, setActiveTab] = useState<Tab>("overview");
@@ -72,6 +73,8 @@ export default function DashboardLayout() {
                 return <ManageContactsDashboard />;
             case "analyzer":
                 return <Analyzer />;
+            case "ai-chat":
+                return <AIChatDashboard />;
             case "settings":
                 return <SettingsDashboard />;
             default:
@@ -85,6 +88,7 @@ export default function DashboardLayout() {
         { id: "import-data", label: "Import Data", icon: UploadCloud },
         { id: "call-lists", label: "Call Lists", icon: List },
         { id: "analyzer", label: "Analyzer", icon: Search },
+        { id: "ai-chat", label: "AI Chat", icon: Search },
         { id: "track-performance", label: "Track Performance", icon: TrendingUp },
         { id: "manage-contacts", label: "Manage Contacts", icon: Users },
         { id: "settings", label: "Settings", icon: Settings },
