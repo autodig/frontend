@@ -73,3 +73,40 @@ export async function runSqlChat(message: string): Promise<SqlChatResponse> {
         return { success: false, message: 'Network error' };
     }
 }
+
+// Call lists API
+export async function createCallList(userId: string, name: string, description?: string) {
+    const res = await fetch(`${backendBaseUrl}/lists`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, name, description }),
+    });
+    return res.json();
+}
+
+export async function getUserCallLists(userId: string) {
+    const res = await fetch(`${backendBaseUrl}/lists/${userId}`);
+    return res.json();
+}
+
+export async function deleteCallList(listId: string) {
+    const res = await fetch(`${backendBaseUrl}/lists/${listId}`, { method: 'DELETE' });
+    return res.json();
+}
+
+export async function getCallListItems(listId: string) {
+    const res = await fetch(`${backendBaseUrl}/lists/${listId}/items`);
+    return res.json();
+}
+
+export async function addContactsToCallList(listId: string, contactIds: string[]) {
+    const res = await fetch(`${backendBaseUrl}/lists/${listId}/items`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contactIds }),
+    });
+    return res.json();
+}
+
+export async function removeContactFromCallList(listId: string, contactId: string) {
+    const res = await fetch(`${backendBaseUrl}/lists/${listId}/items/${contactId}`, { method: 'DELETE' });
+    return res.json();
+}

@@ -27,6 +27,7 @@ import { getCurrentUser } from "@/src/utils/sessionManager";
 import OverviewDashboard from "./OverviewDashboard";
 import PerformanceDashboard from "./PerformanceDashboard";
 import ManageContactsDashboard from "./ManageContactsDashboard";
+import CallListsDashboard from "./CallListsDashboard";
 import SettingsDashboard from "./SettingsDashboard";
 import AIChatDashboard from "./AIChatDashboard";
 
@@ -57,16 +58,7 @@ export default function DashboardLayout() {
             case "import-data":
                 return <LandingDashboard onUploadSuccess={handleUploadSuccess} />;
             case "call-lists":
-                return (
-                    <div className="p-8">
-                        <h2 className="text-3xl font-bold text-foreground mb-6">Call Lists & Processed Data</h2>
-                        {contacts.length > 0 ? (
-                            <ContactTable contacts={contacts} />
-                        ) : (
-                            <p className="text-muted-foreground">No call data available yet. Please import data to view your lists.</p>
-                        )}
-                    </div>
-                );
+                return <CallListsDashboard />;
             case "track-performance":
                 return <PerformanceDashboard />;
             case "manage-contacts":
