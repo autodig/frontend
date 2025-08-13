@@ -6,7 +6,7 @@ import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/src/components/ui/table';
 import { Loader2, MessageSquare } from 'lucide-react';
-import { runSqlChat } from '@/src/utils/api';
+import { runSqlChat, runListAgent } from '@/src/utils/api';
 import { getCurrentUser } from '@/src/utils/sessionManager';
 
 type RowObject = Record<string, any>;
@@ -34,13 +34,21 @@ export default function AIChatDashboard() {
         appendMessage({ role: 'user', content: text });
         setIsLoading(true);
         try {
-            const result = await runSqlChat(text);
-            if (!result.success) {
-                appendMessage({ role: 'assistant', content: result.message || 'Something went wrong' });
+            // First try list agent
+            const agent = await runListAgent(user.id, text);
+            if (agent?.success && agent?.handled) {
+                appendMessage({ role: 'assistant', content: agent.message || 'Done.' });
+                if (Array.isArray(agent.rows)) setRows(agent.rows);
             } else {
-                const count = result.rowCount ?? (Array.isArray(result.rows) ? result.rows.length : 0);
-                appendMessage({ role: 'assistant', content: `SQL: ${result.sql}\nReturned: ${count} row(s) in ${result.timeMs} ms` });
-                setRows(Array.isArray(result.rows) ? result.rows : []);
+                // Fallback to SQL chat
+                const result = await runSqlChat(text);
+                if (!result.success) {
+                    appendMessage({ role: 'assistant', content: result.message || 'Something went wrong' });
+                } else {
+                    const count = result.rowCount ?? (Array.isArray(result.rows) ? result.rows.length : 0);
+                    appendMessage({ role: 'assistant', content: `SQL: ${result.sql}\nReturned: ${count} row(s) in ${result.timeMs} ms` });
+                    setRows(Array.isArray(result.rows) ? result.rows : []);
+                }
             }
         } catch (e) {
             appendMessage({ role: 'assistant', content: 'Network error' });

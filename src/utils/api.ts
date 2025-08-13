@@ -74,6 +74,20 @@ export async function runSqlChat(message: string): Promise<SqlChatResponse> {
     }
 }
 
+export async function runListAgent(userId: string, message: string) {
+    try {
+        const response = await fetch(`${backendBaseUrl}/chat/agent`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, message }),
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Failed to run list agent:', error);
+        return { success: false, message: 'Network error' };
+    }
+}
+
 // Call lists API
 export async function createCallList(userId: string, name: string, description?: string) {
     const res = await fetch(`${backendBaseUrl}/lists`, {
